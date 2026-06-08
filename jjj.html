@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Thẩm Định Dự Án Tre Hướng Phùng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-12">
+
+    <header class="bg-emerald-800 text-white shadow-md py-6 px-8 mb-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="text-xs font-semibold tracking-wider uppercase bg-emerald-700 px-2.5 py-1 rounded">Tài liệu Thẩm định nội bộ của CEO</span>
+                <h1 class="text-2xl md:text-3xl font-bold mt-2">DỰ ÁN RẪY TRE TỨ QUÝ — HƯỚNG PHÙNG</h1>
+                <p class="text-emerald-100 text-sm mt-1">Vị trí địa lý đặc thù: Hướng Hóa, Quảng Trị (Độ cao ~600m | Khí hậu Đà Lạt 2)</p>
+            </div>
+            <div class="bg-emerald-900/50 p-3 rounded-lg border border-emerald-700 text-right">
+                <p class="text-xs text-emerald-300">Trạng thái rẫy hiện tại</p>
+                <p class="text-lg font-bold text-amber-400">Thiếu nước — Hoạt động 14.3% công suất</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 md:px-8">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <p class="text-sm font-medium text-gray-500">Quỹ đất dự án (Hiện tại -> Tiềm năng)</p>
+                <p class="text-2xl font-bold text-gray-800 mt-1">10 Ha <span class="text-sm font-normal text-emerald-600">-> 40 Ha</span></p>
+                <div class="text-xs text-gray-400 mt-2">Đất sạch đã có sổ đỏ chính chủ</div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <p class="text-sm font-medium text-gray-500">Tổng ngân sách vòng đầu tư mồi</p>
+                <p class="text-2xl font-bold text-gray-800 mt-1">400 Triệu <span class="text-xs font-normal text-gray-500">VND</span></p>
+                <div class="text-xs text-amber-600 font-medium mt-2">Cần gọi thêm: 200 - 250 Triệu VND</div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <p class="text-sm font-medium text-gray-500">Sản lượng mục tiêu sau nâng cấp nước</p>
+                <p class="text-2xl font-bold text-emerald-700 mt-1">700 Kg <span class="text-sm font-normal text-gray-500">/ngày</span></p>
+                <div class="text-xs text-gray-400 mt-2">Hiện tại chỉ đạt 100 - 150 kg/ngày</div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <p class="text-sm font-medium text-gray-500">Doanh thu dự phóng (Thận trọng)</p>
+                <p class="text-2xl font-bold text-blue-700 mt-1">~210 Triệu <span class="text-sm font-normal text-gray-500">/tháng</span></p>
+                <div class="text-xs text-gray-400 mt-2">Tính trên giá sàn 10k/kg trong 8 tháng</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Mục Tiêu Tăng Trưởng Sản Lượng Hàng Ngày</h3>
+                    <p class="text-xs text-gray-500 mb-4">Đòn bẩy hạ tầng nước giúp giải phóng năng lực khai thác rẫy từ 1/7 lên 100% công suất.</p>
+                </div>
+                <div class="h-64 relative">
+                    <canvas id="yieldChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Chu Kỳ Biến Động Giá Măng Tươi Thương Phẩm</h3>
+                    <p class="text-xs text-gray-500 mb-4">Mô hình tài chính an toàn chỉ hạch toán trên 8 tháng giá tốt, 4 tháng mùa mưa bắt buộc phải chế biến sâu.</p>
+                </div>
+                <div class="h-64 relative">
+                    <canvas id="priceChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Cấu Trúc Nguồn Vốn Vòng Gọi Vốn Mồi</h3>
+                    <p class="text-xs text-gray-500 mb-4">Phần vốn thiếu hụt 200 - 250 triệu VND cần huy động từ Nhà đầu tư mới điều phối tài chính.</p>
+                </div>
+                <div class="h-64 flex justify-center items-center relative">
+                    <div class="w-full max-w-[280px]">
+                        <canvas id="capexChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Thứ Tự Ưu Tiên Phân Bổ Vốn Đầu Tư Hạ Tầng</h3>
+                    <p class="text-xs text-gray-500 mb-4">Hệ thống Điện mặt trời là ưu tiên số 1 để cắt triệt để biến phí dầu vận hành máy bơm D22.</p>
+                </div>
+                <div class="h-64 relative">
+                    <canvas id="priorityChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-6">
+            <h3 class="text-amber-800 font-bold text-lg mb-2 flex items-center gap-2">
+                ⚠️ Khuyến Nghị Phòng Ngừa Rủi Ro Pháp Lý & Chi Phí Cố Định
+            </h3>
+            <ul class="list-disc list-inside text-sm text-amber-900 space-y-2">
+                <li><strong>Bản chất chi phí thuê đất:</strong> Khoản nợ gốc 1 tỷ đồng của chủ đất tuy không liên đới trực tiếp đến Nhà đầu tư mới nhưng tiền lãi hàng tháng (hơn 10 triệu VND) và tiền gốc trả dần trong 10 năm bắt buộc phải trích từ dòng tiền dự án trước khi chia đều lợi nhuận làm bốn.</li>
+                <li><strong>Cơ chế giải ngân tiến độ:</strong> Người hỏi đứng tên đại diện pháp lý ("Lo tên"), kiểm soát chặt chẽ giải ngân theo tiến độ thực tế dựa trên hóa đơn/chứng từ hợp lệ để tránh rủi ro đầu tư sai lầm như hệ thống nước cũ (hỏng hoàn toàn, tốn gần 3 tỷ VND trước đây).</li>
+            </ul>
+        </div>
+
+    </main>
+
+    <script>
+        // --- BIỂU ĐỒ 1: Sản lượng hàng ngày ---
+        const ctxYield = document.getElementById('yieldChart').getContext('2d');
+        new Chart(ctxYield, {
+            type: 'bar',
+            data: {
+                labels: ['Hiện tại (Thiếu nước ròng)', 'Mục tiêu (Khi hoàn thành hạ tầng nước)'],
+                datasets: [{
+                    label: 'Sản lượng (Kg/Ngày)',
+                    data: [125, 700], // 125 là trung bình của 100-150kg
+                    backgroundColor: ['#f59e0b', '#047857'],
+                    borderRadius: 8,
+                    barThickness: 45
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Sản lượng (Kg)' } } }
+            }
+        });
+
+        // --- BIỂU ĐỒ 2: Biến động giá măng theo mùa ---
+        const ctxPrice = document.getElementById('priceChart').getContext('2d');
+        new Chart(ctxPrice, {
+            type: 'line',
+            data: {
+                labels: ['Mùa mưa (Vứt đi)', 'Hiện tại', 'Gần Tết', 'Giáp Tết (Đỉnh)', 'Sau Tết (1 Tháng)'],
+                datasets: [{
+                    label: 'Giá măng tươi (VND/Kg)',
+                    data: [4500, 11000, 13500, 20000, 19500],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#047857',
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Đơn vị: VND/Kg' } } }
+            }
+        });
+
+        // --- BIỂU ĐỒ 3: Cơ cấu nguồn vốn CAPEX ---
+        const ctxCapex = document.getElementById('capexChart').getContext('2d');
+        new Chart(ctxCapex, {
+            type: 'doughnut',
+            data: {
+                labels: ['Vốn sẵn có', 'Vốn cần gọi thêm'],
+                datasets: [{
+                    data: [170, 230], // 230 là trung bình của 200-250tr còn thiếu
+                    backgroundColor: ['#3b82f6', '#ef4444'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15 } }
+                }
+            }
+        });
+
+        // --- BIỂU ĐỒ 4: Ưu tiên phân bổ đầu tư hạ tầng ---
+        const ctxPriority = document.getElementById('priorityChart').getContext('2d');
+        new Chart(ctxPriority, {
+            type: 'bar',
+            data: {
+                labels: ['Sửa Điện Mặt Trời', 'Hệ thống Dẫn Nước 2 Đồi', 'Xây dựng Nhà Công Nhân', 'Hạ tầng phụ trợ khác'],
+                datasets: [{
+                    label: 'Mức độ ưu tiên vốn đầu tư',
+                    data: [95, 85, 50, 30], // Điểm số đánh giá trọng số mức độ cấp thiết
+                    backgroundColor: '#6b7280',
+                    hoverBackgroundColor: '#374151',
+                    borderRadius: 6,
+                    barThickness: 25
+                }]
+            },
+            options: {
+                indexAxis: 'y', // Biến thành biểu đồ thanh ngang
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true, max: 100, title: { display: true, text: 'Trọng số ưu tiên (%)' } } }
+            }
+        });
+    </script>
+</body>
+</html>
